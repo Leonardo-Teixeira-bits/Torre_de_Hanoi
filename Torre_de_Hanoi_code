@@ -1,0 +1,46 @@
+#include <iostream>
+#include <ctime>
+#include <iomanip>
+#include <algorithm>
+#include <locale>
+
+using namespace std;
+
+
+void TorredeHanoi (int disco, int inicio, int temporario, int fim, int *profundidade1, int *profundidade2)
+{
+	(*profundidade1)++;
+	
+	*profundidade2 = max(*profundidade2, *profundidade1);
+	
+    if(disco > 0)
+    {
+        TorredeHanoi(disco-1, inicio, fim, temporario, profundidade1, profundidade2);
+        cout <<"Mova o disco "<< disco << " da torre "<< inicio << " para a torre "<< fim << endl;
+        TorredeHanoi(disco-1, temporario, inicio, fim, profundidade1, profundidade2);
+    }
+    (*profundidade1)--;
+}
+
+int main()
+{
+    int n;
+    float tempo1, tempo2, tempo;
+    int prof1 = 0;
+    int prof2 = 0;
+    setlocale(LC_ALL, "Portuguese");
+
+    cout << "escreva o número de discos: ";
+    cin >> n;
+    
+    tempo1 = clock();
+    TorredeHanoi(n, 1, 2, 3, &prof1, &prof2);
+    tempo2 = clock();
+    
+    tempo = (tempo2 - tempo1)/ CLOCKS_PER_SEC;
+    
+    cout << "O tempo em que é feito: "<< fixed << setprecision(3) << tempo << " segundos"<<endl;
+    
+    cout << "O número máximo de vezes que a recursão é usada ao mesmo tempo: " << prof2 << " vezes";
+}
+
